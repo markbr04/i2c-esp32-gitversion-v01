@@ -14,8 +14,10 @@
 #define I2C_MASTER_TIMEOUT_MS           5000
 #define LOG_LOCAL_LEVEL                 ESP_LOG_VERBOSE             //Alineación marginal desde linux
 
-#define ACS37800_SENSOR_ADDR            0x61        /*!< Address of the MPU9250 sensor */
+#define ACS37800_SENSOR_ADDR            0x60        /*!< Address of the MPU9250 sensor */
                                                     /*Cambiando la dirección del sensor*/
+
+#define DATA_SIZE                       4
 
 static const char *TAG = "ejemplo";
 
@@ -53,16 +55,37 @@ static esp_err_t acs37800_master_probe(i2c_master_bus_handle_t bus_handle, uint1
     }
     return ret;
 }
-   
+
+static esp_err_t read_acs37800(i2c_master_dev_handle_t dev_handle, i2c_operation_job_t *i2c_operation, size_t operation_list_num, int xfer_timeout_ms)
+{   
+    uint8_t address1 = 0x40;
+    i2c_operation_job_t operations[] = {
+    
+    { .command = I2C_MASTER_CMD_START },
+    { .command = I2C_MASTER_CMD_WRITE, .write = { .ack_check = false, .data = (uint8_t *) &address1, .total_bytes = 1 } },
+    { .command = I2C_MASTER_CMD_STOP },
+};
+    esp_err_t ret = i2c_master_execute_defined_operations(dev_handle, operations, sizeof(operations)/sizeof(i2c_operation_job_t), I2C_MASTER_TIMEOUT_MS);
+    if (ret == ESP_OK) {
+        ESP_LOGI(TAG, "Lectura exitosa del sensor ACS37800");
+    } else {
+        ESP_LOGE(TAG, "Error al leer el sensor ACS37800");
+    }
+    return ret;
+}
+
     
 void app_main(void)
 {
+
+
     i2c_master_bus_handle_t bus_handle;
     i2c_master_dev_handle_t dev_handle;
     i2c_master_init(&bus_handle, &dev_handle);
     ESP_LOGI(TAG, "I2C initialized successfully");
 
     acs37800_master_probe(bus_handle, ACS37800_SENSOR_ADDR, I2C_MASTER_TIMEOUT_MS);
+    read_acs37800(dev_handle, NULL, 0, I2C_MASTER_TIMEOUT_MS);
 
     ESP_ERROR_CHECK(i2c_master_bus_rm_device(dev_handle));
     ESP_ERROR_CHECK(i2c_del_master_bus(bus_handle));
