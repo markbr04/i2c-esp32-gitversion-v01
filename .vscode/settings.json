@@ -6,5 +6,6 @@
         "board/esp32-wrover-kit-3.3v.cfg"
     ],
     "idf.port": "/dev/ttyUSB0",
-    "idf.toolsPath": "/home/markbr88/.espressif"
+    "idf.toolsPath": "/home/markbr88/.espressif",
+    "idf.flashType": "UART"
 }
