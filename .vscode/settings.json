@@ -1,0 +1,10 @@
+{
+    "C_Cpp.intelliSenseEngine": "default",
+    "idf.espIdfPath": "/home/markbr88/esp/v5.4.1/esp-idf",
+    "idf.pythonInstallPath": "/home/markbr88/anaconda3/bin/python",
+    "idf.openOcdConfigs": [
+        "board/esp32-wrover-kit-3.3v.cfg"
+    ],
+    "idf.port": "/dev/ttyUSB0",
+    "idf.toolsPath": "/home/markbr88/.espressif"
+}
