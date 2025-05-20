@@ -21,6 +21,8 @@
 
 static const char *TAG = "ejemplo";
 
+uint8_t multi_data[4];
+
 /**
  * @brief i2c master initialization
  */
@@ -58,7 +60,8 @@ static esp_err_t acs37800_master_probe(i2c_master_bus_handle_t bus_handle, uint1
 
 static esp_err_t read_acs37800(i2c_master_dev_handle_t dev_handle, i2c_operation_job_t *i2c_operation, size_t operation_list_num, int xfer_timeout_ms)
 {   
-    uint8_t address1 = 0x40;
+    uint8_t address1 = 0x28;
+    
     i2c_operation_job_t operations[] = {
     
     { .command = I2C_MASTER_CMD_START },
@@ -66,8 +69,14 @@ static esp_err_t read_acs37800(i2c_master_dev_handle_t dev_handle, i2c_operation
     { .command = I2C_MASTER_CMD_STOP },
 };
     esp_err_t ret = i2c_master_execute_defined_operations(dev_handle, operations, sizeof(operations)/sizeof(i2c_operation_job_t), I2C_MASTER_TIMEOUT_MS);
+    
     if (ret == ESP_OK) {
         ESP_LOGI(TAG, "Lectura exitosa del sensor ACS37800");
+        for (int i = 0; i < sizeof(multi_data); i++)
+        {
+            printf(" 0x%02X", multi_data[i]);
+        }
+        
     } else {
         ESP_LOGE(TAG, "Error al leer el sensor ACS37800");
     }
