@@ -14,7 +14,8 @@
 #define I2C_MASTER_TIMEOUT_MS           5000
 #define LOG_LOCAL_LEVEL                 ESP_LOG_VERBOSE             //Alineación marginal desde linux
 
-#define ACS37800_SENSOR_ADDR            0x60        /*!< Address of the MPU9250 sensor */
+#define ACS37800_SENSOR_ADDR            0x61        /*!< Address of the MPU9250 sensor */
+                                                    /*Cambiando la dirección del sensor*/
 
 static const char *TAG = "ejemplo";
 
